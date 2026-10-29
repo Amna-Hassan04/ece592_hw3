@@ -1,0 +1,11 @@
+Machine,Iteration,Dependent_Cycles,Independent_Cycles,Ratio
+upgrade.ece.ncsu.edu,1,1179,790,/
+upgrade.ece.ncsu.edu,2,1230,669,/
+upgrade.ece.ncsu.edu,3,1022,308,/
+upgrade.ece.ncsu.edu,4,1034,313,/
+upgrade.ece.ncsu.edu,5,953,484,/
+upgrade.ece.ncsu.edu,6,925,485,/
+upgrade.ece.ncsu.edu,7,1117,480,/
+upgrade.ece.ncsu.edu,8,1664,691,/
+upgrade.ece.ncsu.edu,9,951,323,/
+upgrade.ece.ncsu.edu,10,1230,335,/

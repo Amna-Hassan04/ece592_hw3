@@ -4,7 +4,6 @@ import seaborn as sns
 import glob
 import os
 
-# Search patterns to locate ROB CSV data files from root or plots directory
 search_paths = [
     "data/q3_rob/*_rob_alu.csv",
     "../data/q3_rob/*_rob_alu.csv"
@@ -17,47 +16,59 @@ for pattern in search_paths:
         csv_files.extend(files)
 
 csv_files = list(set(csv_files))
-print(f"Found ROB CSV files: {csv_files}")
+print(f"Found broad ROB CSV files: {csv_files}")
 
-# Read and combine discovered dataframes
 dfs = [pd.read_csv(f) for f in csv_files]
 
 if dfs:
     df = pd.concat(dfs, ignore_index=True)
     df.columns = df.columns.str.strip()
-    
-    # Clean up machine domain names to concise labels (e.g., upgrade or skylark)
-    df["Machine"] = df["Machine"].str.split(".").str[0]
+    df["Machine_Clean"] = df["Machine"].str.split(".").str[0]
 
-    # Configure plotting style and dimensions
+    os.makedirs("plots", exist_ok=True)
+
+    # 1. Generate individual broad plots per machine
+    for machine in df["Machine_Clean"].unique():
+        machine_df = df[df["Machine_Clean"] == machine].sort_values("Window_Size")
+        
+        sns.set_theme(style="whitegrid")
+        fig, ax = plt.subplots(figsize=(9, 6))
+        sns.lineplot(
+            data=machine_df, x="Window_Size", y="Cycles", 
+            marker="o", color="b", linewidth=2.5, markersize=8, ax=ax
+        )
+        ax.set_title(f"Reorder Buffer (ROB) ALU Window Size vs. Total Cycles ({machine})", fontsize=13, weight="bold")
+        ax.set_ylabel("Total Execution Cycles", fontsize=11)
+        ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
+        plt.tight_layout()
+        out_path = f"plots/{machine}_rob_alu_broad.png"
+        plt.savefig(out_path, dpi=300)
+        plt.close()
+        print(f"Saved broad plot for {machine}: {out_path}")
+
+    # 2. Generate combined broad comparison plot (The crucial multi-machine graph)
     sns.set_theme(style="whitegrid")
     fig, ax = plt.subplots(figsize=(9, 6))
-
-    # Plot line graph with markers for each machine
     sns.lineplot(
         data=df, 
         x="Window_Size", 
         y="Cycles", 
-        hue="Machine", 
+        hue="Machine_Clean", 
         marker="o", 
         linewidth=2.5, 
         markersize=8, 
         ax=ax
     )
-
-    # Set chart labels, title, and legend
     ax.set_title("Reorder Buffer (ROB) ALU Window Size vs. Total Cycles", fontsize=13, weight="bold")
     ax.set_ylabel("Total Execution Cycles", fontsize=11)
     ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
     ax.legend(title="Course Machine", loc="upper left")
-
     plt.tight_layout()
     
-    # Save output plot to target directories
-    plt.savefig("rob_alu_comparison.png", dpi=300)
-    if os.path.exists("../plots"):
-        plt.savefig("../plots/rob_alu_comparison.png", dpi=300)
-        
-    print("ROB comparison graph successfully generated!")
+    combined_path = "plots/rob_alu_comparison.png"
+    plt.savefig(combined_path, dpi=300)
+    plt.close()
+    print(f"Saved combined broad comparison plot: {combined_path}")
+
 else:
-    print("Error: No ROB CSV data files found.")
+    print("Error: No broad ROB CSV data found.")

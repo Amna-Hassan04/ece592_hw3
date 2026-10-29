@@ -1,0 +1,15 @@
+Hostname: upgrade.ece.ncsu.edu
+Date: Wed Oct 28 11:57:20 PM EDT 2026
+--- CPU Info ---
+Architecture:                            x86_64
+Model name:                              Intel(R) Core(TM) i7-8700 CPU @ 3.20GHz
+CPU family:                              6
+Model:                                   158
+Thread(s) per core:                      2
+Core(s) per socket:                      6
+Socket(s):                               1
+Stepping:                                10
+--- Enclave / SGX / SEV Hardware Support ---
+No /dev/sgx* device nodes present
+--- Perf Paranoia Level ---
+4

@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+upgrade.ece.ncsu.edu,Method1_ALU,Dependent,16,33.77,0.00,0.00
+upgrade.ece.ncsu.edu,Method1_ALU,Independent,16,18.76,0.00,0.00
+upgrade.ece.ncsu.edu,Method2_DRAM,Independent,0,232.12,0.0,0.0
+upgrade.ece.ncsu.edu,Method2_DRAM,Independent,8,236.48,0.0,0.0
+upgrade.ece.ncsu.edu,Method2_DRAM,Independent,16,256.58,0.0,0.0
+upgrade.ece.ncsu.edu,Method2_DRAM,Independent,32,250.18,0.0,0.0
+upgrade.ece.ncsu.edu,Method2_DRAM,Independent,64,252.30,0.0,0.0

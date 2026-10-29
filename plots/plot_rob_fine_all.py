@@ -3,6 +3,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import glob
 import os
+import numpy as np
 
 # Find all fine-grained ROB CSV data files
 search_paths = [
@@ -26,52 +27,73 @@ if dfs:
     df.columns = df.columns.str.strip()
     df["Machine_Clean"] = df["Machine"].str.split(".").str[0]
 
-    os.makedirs("plots", abs=True) if not os.path.exists("plots") else None
+    os.makedirs("plots", exist_ok=True)
 
-    # 1. Generate an individual plot for each machine separately
+    # 1. Generate individual plots with both raw points and a smooth trend line
     for machine in df["Machine_Clean"].unique():
-        machine_df = df[df["Machine_Clean"] == machine]
+        machine_df = df[df["Machine_Clean"] == machine].sort_values("Window_Size")
         
         sns.set_theme(style="whitegrid")
         fig, ax = plt.subplots(figsize=(9, 6))
 
-        sns.lineplot(
+        # Plot raw measured points as scatter/markers
+        sns.scatterplot(
             data=machine_df, 
             x="Window_Size", 
             y="Cycles", 
-            marker="o", 
             color="teal",
-            linewidth=2.5, 
-            markersize=8, 
-            ax=ax
+            s=70,
+            zorder=3,
+            ax=ax,
+            label="Measured Data"
         )
 
-        ax.set_title(f"Fine-Grained ROB Inflection Zone ({machine})", fontsize=13, weight="bold")
+        # Compute a smoothed rolling average or polynomial fit for the trend line
+        # Using a rolling mean to smooth out alignment jitter while preserving the curve shape
+        machine_df["Smoothed_Cycles"] = machine_df["Cycles"].rolling(window=3, center=True, min_periods=1).mean()
+
+        sns.lineplot(
+            data=machine_df,
+            x="Window_Size",
+            y="Smoothed_Cycles",
+            color="darkcyan",
+            linewidth=2.5,
+            linestyle="--",
+            ax=ax,
+            label="Smoothed Trend"
+        )
+
+        ax.set_title(f"Fine-Grained ROB Inflection Zone with Trend ({machine})", fontsize=13, weight="bold")
         ax.set_ylabel("Total Execution Cycles", fontsize=11)
         ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
+        ax.legend(loc="upper left")
 
         plt.tight_layout()
         out_path = f"plots/{machine}_rob_fine_zoom.png"
         plt.savefig(out_path, dpi=300)
         plt.close()
-        print(f"Saved individual plot: {out_path}")
+        print(f"Saved smoothed individual plot: {out_path}")
 
-    # 2. Generate a combined comparison plot for all machines together
+    # 2. Generate a combined comparison plot with smooth trends
     sns.set_theme(style="whitegrid")
     fig, ax = plt.subplots(figsize=(9, 6))
 
-    sns.lineplot(
-        data=df, 
-        x="Window_Size", 
-        y="Cycles", 
-        hue="Machine_Clean", 
-        marker="o", 
-        linewidth=2.5, 
-        markersize=8, 
-        ax=ax
-    )
+    for machine in df["Machine_Clean"].unique():
+        m_df = df[df["Machine_Clean"] == machine].sort_values("Window_Size")
+        m_df["Smoothed_Cycles"] = m_df["Cycles"].rolling(window=3, center=True, min_periods=1).mean()
+        
+        sns.lineplot(
+            data=m_df, 
+            x="Window_Size", 
+            y="Smoothed_Cycles", 
+            hue="Machine_Clean",
+            marker="o", 
+            linewidth=2.5, 
+            markersize=6, 
+            ax=ax
+        )
 
-    ax.set_title("Fine-Grained ROB Inflection Zone Comparison", fontsize=13, weight="bold")
+    ax.set_title("Fine-Grained ROB Inflection Zone Comparison (Smoothed)", fontsize=13, weight="bold")
     ax.set_ylabel("Total Execution Cycles", fontsize=11)
     ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
     ax.legend(title="Course Machine", loc="upper left")
@@ -80,7 +102,7 @@ if dfs:
     combined_path = "plots/rob_fine_comparison_zoom.png"
     plt.savefig(combined_path, dpi=300)
     plt.close()
-    print(f"Saved combined comparison plot: {combined_path}")
+    print(f"Saved combined smoothed comparison plot: {combined_path}")
 
 else:
     print("Error: No fine-grained ROB CSV data files found.")

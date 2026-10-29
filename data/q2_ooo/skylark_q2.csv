@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+skylark.ece.ncsu.edu,Method1_ALU,Dependent,16,35.74,49.01,0.45
+skylark.ece.ncsu.edu,Method1_ALU,Independent,16,24.08,33.02,0.64
+skylark.ece.ncsu.edu,Method2_DRAM,Independent,0,392.50,0.0,0.0
+skylark.ece.ncsu.edu,Method2_DRAM,Independent,8,392.97,0.0,0.0
+skylark.ece.ncsu.edu,Method2_DRAM,Independent,16,391.89,0.0,0.0
+skylark.ece.ncsu.edu,Method2_DRAM,Independent,32,388.90,0.0,0.0
+skylark.ece.ncsu.edu,Method2_DRAM,Independent,64,387.83,0.0,0.0

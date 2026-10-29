@@ -1,0 +1,15 @@
+Hostname: skylark.ece.ncsu.edu
+Date: Thu Oct 29 12:29:31 AM EDT 2026
+--- CPU Info ---
+Architecture:                            x86_64
+Model name:                              AMD EPYC 7532 32-Core Processor
+CPU family:                              23
+Model:                                   49
+Thread(s) per core:                      1
+Core(s) per socket:                      32
+Socket(s):                               2
+Stepping:                                0
+--- Enclave / SGX / SEV Hardware Support ---
+No /dev/sgx* device nodes present
+--- Perf Paranoia Level ---
+2

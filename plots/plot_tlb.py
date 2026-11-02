@@ -21,7 +21,7 @@ if dfs:
 
     os.makedirs("plots", exist_ok=True)
 
-    # 1. Generate individual machine-specific plots (clean lines, no confidence bands)
+    # 1. Generate individual machine-specific plots matching the exact clean style
     for machine in df["Machine_Clean"].unique():
         machine_df = df[df["Machine_Clean"] == machine].sort_values("Pages")
         
@@ -36,7 +36,7 @@ if dfs:
             color="m",
             linewidth=2.5, 
             markersize=6, 
-            errorbar=None,  # Removes the shaded confidence interval band
+            errorbar=None,  # Completely removes the shaded error/confidence band
             ax=ax
         )
 
@@ -50,7 +50,7 @@ if dfs:
         plt.close()
         print(f"Saved clean machine-specific TLB plot: {out_path}")
 
-    # 2. Generate combined multi-machine comparison plot (clean lines, no shaded bands)
+    # 2. Generate clean multi-machine comparison plot without shaded bands
     sns.set_theme(style="whitegrid")
     fig, ax = plt.subplots(figsize=(9, 6))
 
@@ -62,7 +62,7 @@ if dfs:
         marker="o", 
         linewidth=2.5, 
         markersize=6, 
-        errorbar=None,  # Removes the shaded confidence interval band
+        errorbar=None,  # Completely removes the shaded error/confidence band
         ax=ax
     )
 

@@ -16,6 +16,35 @@ if dfs:
 
     os.makedirs("plots", exist_ok=True)
 
+    # 1. Generate individual plots for each machine so they don't overwrite
+    for machine in df["Machine_Clean"].unique():
+        machine_df = df[df["Machine_Clean"] == machine].sort_values("Window_Size")
+        
+        sns.set_theme(style="whitegrid")
+        fig, ax = plt.subplots(figsize=(9, 6))
+
+        sns.lineplot(
+            data=machine_df, 
+            x="Window_Size", 
+            y="Cycles", 
+            marker="o", 
+            color="teal",
+            linewidth=2.5, 
+            markersize=6, 
+            ax=ax
+        )
+
+        ax.set_title(f"Henry Wong's ROB Capacity Benchmark ({machine})", fontsize=13, weight="bold")
+        ax.set_ylabel("Normalized Execution Cycles", fontsize=11)
+        ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
+
+        plt.tight_layout()
+        out_path = f"plots/{machine}_hw_rob.png"
+        plt.savefig(out_path, dpi=300)
+        plt.close()
+        print(f"Saved machine-specific plot: {out_path}")
+
+    # 2. Generate combined multi-machine comparison plot
     sns.set_theme(style="whitegrid")
     fig, ax = plt.subplots(figsize=(9, 6))
 
@@ -30,15 +59,16 @@ if dfs:
         ax=ax
     )
 
-    ax.set_title("Henry Wong's ROB Capacity Benchmark", fontsize=13, weight="bold")
+    ax.set_title("Henry Wong's ROB Capacity Benchmark Comparison", fontsize=13, weight="bold")
     ax.set_ylabel("Normalized Execution Cycles", fontsize=11)
     ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
     ax.legend(title="Course Machine", loc="upper left")
 
     plt.tight_layout()
-    out_path = "plots/hw_rob_comparison.png"
-    plt.savefig(out_path, dpi=300)
+    comparison_path = "plots/hw_rob_comparison.png"
+    plt.savefig(comparison_path, dpi=300)
     plt.close()
-    print(f"Saved Henry Wong ROB plot: {out_path}")
+    print(f"Saved comparison plot: {comparison_path}")
+
 else:
     print("Error: No Henry Wong ROB CSV data found.")

@@ -1,0 +1,15 @@
+Hostname: sunbird.ece.ncsu.edu
+Date: Tue Nov  3 12:25:35 PM EST 2026
+--- CPU Info ---
+Architecture:                            x86_64
+Model name:                              Intel(R) Xeon(R) CPU E5-2680 v3 @ 2.50GHz
+CPU family:                              6
+Model:                                   63
+Thread(s) per core:                      2
+Core(s) per socket:                      12
+Socket(s):                               2
+Stepping:                                2
+--- Enclave / SGX / SEV Hardware Support ---
+No /dev/sgx* device nodes present
+--- Perf Paranoia Level ---
+2

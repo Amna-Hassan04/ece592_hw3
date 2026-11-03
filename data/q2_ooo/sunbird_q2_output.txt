@@ -1,0 +1,11 @@
+============================================================
+Host: sunbird.ece.ncsu.edu | Question 2: Out-of-Order Execution Detection
+============================================================
+[Method 1A] SQRTSD + 16 Dependent ADDs   :  58.17 cycles (RDTSCP) |  44.02 cycles (PMU) | IPC: 0.50
+[Method 1B] SQRTSD + 16 Independent ADDs :  23.81 cycles (RDTSCP) |  18.03 cycles (PMU) | IPC: 1.16
+
+[Method 2] DRAM Load +  0 Indep ADDs     : 297.80 cycles (RDTSCP)
+[Method 2] DRAM Load +  8 Indep ADDs     : 301.32 cycles (RDTSCP)
+[Method 2] DRAM Load + 16 Indep ADDs     : 311.45 cycles (RDTSCP)
+[Method 2] DRAM Load + 32 Indep ADDs     : 302.25 cycles (RDTSCP)
+[Method 2] DRAM Load + 64 Indep ADDs     : 314.62 cycles (RDTSCP)

@@ -1,0 +1,15 @@
+Hostname: sorrow.ece.ncsu.edu
+Date: Tue Nov  3 12:55:16 PM EST 2026
+--- CPU Info ---
+Architecture:                            x86_64
+Model name:                              11th Gen Intel(R) Core(TM) i7-1165G7 @ 2.80GHz
+CPU family:                              6
+Model:                                   140
+Thread(s) per core:                      2
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                1
+--- Enclave / SGX / SEV Hardware Support ---
+No /dev/sgx* device nodes present
+--- Perf Paranoia Level ---
+4

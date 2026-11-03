@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+charnwood.ece.ncsu.edu,Method1_ALU,Dependent,16,42.60,0.00,0.00
+charnwood.ece.ncsu.edu,Method1_ALU,Independent,16,23.18,0.00,0.00
+charnwood.ece.ncsu.edu,Method2_DRAM,Independent,0,270.61,0.0,0.0
+charnwood.ece.ncsu.edu,Method2_DRAM,Independent,8,273.31,0.0,0.0
+charnwood.ece.ncsu.edu,Method2_DRAM,Independent,16,276.35,0.0,0.0
+charnwood.ece.ncsu.edu,Method2_DRAM,Independent,32,279.26,0.0,0.0
+charnwood.ece.ncsu.edu,Method2_DRAM,Independent,64,293.31,0.0,0.0

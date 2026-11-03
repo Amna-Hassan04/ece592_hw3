@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+artemisia.ece.ncsu.edu,Method1_ALU,Dependent,16,24.29,32.66,0.67
+artemisia.ece.ncsu.edu,Method1_ALU,Independent,16,18.61,25.01,0.84
+artemisia.ece.ncsu.edu,Method2_DRAM,Independent,0,308.38,0.0,0.0
+artemisia.ece.ncsu.edu,Method2_DRAM,Independent,8,308.97,0.0,0.0
+artemisia.ece.ncsu.edu,Method2_DRAM,Independent,16,308.07,0.0,0.0
+artemisia.ece.ncsu.edu,Method2_DRAM,Independent,32,309.17,0.0,0.0
+artemisia.ece.ncsu.edu,Method2_DRAM,Independent,64,310.59,0.0,0.0

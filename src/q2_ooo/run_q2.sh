@@ -1,6 +1,6 @@
 #!/bin/bash
 HOST=$(hostname -s)
-OUT_DIR=~/ece592_hw3/data/q2_ooo
+OUT_DIR="data/q2_ooo"
 mkdir -p "$OUT_DIR"
 
 echo "=== Collecting System & Enclave Info for $HOST ==="
@@ -18,5 +18,5 @@ echo "=== Collecting System & Enclave Info for $HOST ==="
 
 echo ""
 echo "=== Compiling and Running Question 2 Experiment ==="
-gcc -O2 q2_ooo.c -o q2_ooo
-./q2_ooo "$OUT_DIR/${HOST}_q2.csv" | tee "$OUT_DIR/${HOST}_q2_output.txt"
+gcc -O2 src/q2_ooo/q2_ooo.c -o src/q2_ooo/q2_ooo
+./src/q2_ooo/q2_ooo "$OUT_DIR/${HOST}_q2.csv" | tee "$OUT_DIR/${HOST}_q2_output.txt"

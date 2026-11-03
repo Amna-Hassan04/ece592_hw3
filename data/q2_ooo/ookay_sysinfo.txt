@@ -1,0 +1,15 @@
+Hostname: ookay.ece.ncsu.edu
+Date: Tue Nov  3 12:48:30 PM EST 2026
+--- CPU Info ---
+Architecture:                            x86_64
+Model name:                              Intel(R) Core(TM) i7-7700 CPU @ 3.60GHz
+CPU family:                              6
+Model:                                   158
+Thread(s) per core:                      2
+Core(s) per socket:                      4
+Socket(s):                               1
+Stepping:                                9
+--- Enclave / SGX / SEV Hardware Support ---
+No /dev/sgx* device nodes present
+--- Perf Paranoia Level ---
+4

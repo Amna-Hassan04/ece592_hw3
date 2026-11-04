@@ -1,0 +1,9 @@
+enclave
+{
+    global:
+        g_global_data;
+        g_global_data_sim;
+        enclave_entry;
+    local:
+        *;
+};

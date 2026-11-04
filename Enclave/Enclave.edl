@@ -1,0 +1,7 @@
+enclave {
+    from "sgx_tstdc.edl" import *;
+
+    trusted {
+        public int enclave_pipeline_test(uint64_t iterations, [out] uint64_t *dep_cycles, [out] uint64_t *ind_cycles);
+    };
+};

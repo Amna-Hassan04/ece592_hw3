@@ -34,7 +34,7 @@ if dfs:
             ax=ax
         )
 
-        ax.set_title(f"Henry Wong's ROB Capacity Benchmark ({machine})", fontsize=13, weight="bold")
+        ax.set_title(f"ROB Capacity Benchmark ({machine})", fontsize=13, weight="bold")
         ax.set_ylabel("Normalized Execution Cycles", fontsize=11)
         ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
 
@@ -59,7 +59,7 @@ if dfs:
         ax=ax
     )
 
-    ax.set_title("Henry Wong's ROB Capacity Benchmark Comparison", fontsize=13, weight="bold")
+    ax.set_title(" ROB Capacity Benchmark Comparison", fontsize=13, weight="bold")
     ax.set_ylabel("Normalized Execution Cycles", fontsize=11)
     ax.set_xlabel("Instruction Window Size (N)", fontsize=11)
     ax.legend(title="Course Machine", loc="upper left")

@@ -2,6 +2,17 @@ enclave {
     from "sgx_tstdc.edl" import *;
 
     trusted {
-        public int enclave_pipeline_test(uint64_t iterations, [out] uint64_t *dep_cycles, [out] uint64_t *ind_cycles);
+        public void ecall_run_pipeline(
+            [out] uint64_t *dependent_time, 
+            [out] uint64_t *independent_time
+        );
+        public void ecall_run_branch(
+            [out] uint64_t *random_cycles, 
+            [out] uint64_t *sorted_cycles
+        );
+    };
+
+    untrusted {
+        void ocall_print([in, string] const char *str);
     };
 };

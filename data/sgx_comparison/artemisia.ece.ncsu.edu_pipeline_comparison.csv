@@ -1,0 +1,3 @@
+Machine,Execution_Mode,Dependent_Cycles,Independent_Cycles
+artemisia.ece.ncsu.edu,Outside_Enclave,2062,1799793283
+artemisia.ece.ncsu.edu,Inside_Enclave,14446,14180

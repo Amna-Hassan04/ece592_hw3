@@ -16,6 +16,10 @@
 extern "C" {
 #endif
 
+#ifndef OCALL_PRINT_DEFINED__
+#define OCALL_PRINT_DEFINED__
+void SGX_UBRIDGE(SGX_NOCONVENTION, ocall_print, (const char* str));
+#endif
 #ifndef SGX_OC_CPUIDEX_DEFINED__
 #define SGX_OC_CPUIDEX_DEFINED__
 void SGX_UBRIDGE(SGX_CDECL, sgx_oc_cpuidex, (int cpuinfo[4], int leaf, int subleaf));
@@ -37,7 +41,8 @@ int SGX_UBRIDGE(SGX_CDECL, sgx_thread_setwait_untrusted_events_ocall, (const voi
 int SGX_UBRIDGE(SGX_CDECL, sgx_thread_set_multiple_untrusted_events_ocall, (const void** waiters, size_t total));
 #endif
 
-sgx_status_t enclave_pipeline_test(sgx_enclave_id_t eid, int* retval, uint64_t iterations, uint64_t* dep_cycles, uint64_t* ind_cycles);
+sgx_status_t ecall_run_pipeline(sgx_enclave_id_t eid, uint64_t* dependent_time, uint64_t* independent_time);
+sgx_status_t ecall_run_branch(sgx_enclave_id_t eid, uint64_t* random_cycles, uint64_t* sorted_cycles);
 
 #ifdef __cplusplus
 }

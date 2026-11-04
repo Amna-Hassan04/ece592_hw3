@@ -15,8 +15,10 @@
 extern "C" {
 #endif
 
-int enclave_pipeline_test(uint64_t iterations, uint64_t* dep_cycles, uint64_t* ind_cycles);
+void ecall_run_pipeline(uint64_t* dependent_time, uint64_t* independent_time);
+void ecall_run_branch(uint64_t* random_cycles, uint64_t* sorted_cycles);
 
+sgx_status_t SGX_CDECL ocall_print(const char* str);
 sgx_status_t SGX_CDECL sgx_oc_cpuidex(int cpuinfo[4], int leaf, int subleaf);
 sgx_status_t SGX_CDECL sgx_thread_wait_untrusted_event_ocall(int* retval, const void* self);
 sgx_status_t SGX_CDECL sgx_thread_set_untrusted_event_ocall(int* retval, const void* waiter);

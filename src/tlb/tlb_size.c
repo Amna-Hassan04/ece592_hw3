@@ -1,14 +1,8 @@
-/*
-  TLB Capacity and Hierarchy Microbenchmark
-  Measures L1 DTLB and STLB capacities via page-strided pointer chasing.
-*/
-
 #include <stdio.h>
 #include <stdlib.h>
 #include <stdint.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <time.h>
 
 static inline unsigned long long rdtsc() {
     unsigned int lo, hi;
@@ -25,24 +19,14 @@ static inline void my_rand_shuffle(size_t *arr, size_t n) {
     }
 }
 
-int main(int argc, char *argv[]) {
-    size_t page_size = 4096; // Standard 4KB page
-    size_t max_pages = 2048; // Sweep up to 2048 pages (covers L1 and STLB)
+int main() {
+    size_t page_size = 4096;
+    size_t max_pages = 2048;
     size_t total_bytes = max_pages * page_size;
 
-    // Allocate page-aligned memory buffer using mmap
-    char *buffer = (char *)mmap(NULL, total_bytes, PROT_READ | PROT_WRITE, 
-                                MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
-    if (buffer == MAP_FAILED) {
-        perror("mmap failed");
-        return 1;
-    }
-
-    // Initialize indices for random pointer chasing across pages
+    char *buffer = (char *)mmap(NULL, total_bytes, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
     size_t *indices = (size_t *)malloc(max_pages * sizeof(size_t));
-    for (size_t i = 0; i < max_pages; i++) {
-        indices[i] = i;
-    }
+    for (size_t i = 0; i < max_pages; i++) indices[i] = i;
 
     srand(42);
     printf("Pages,Avg_Cycles_Per_Access\n");
@@ -50,12 +34,9 @@ int main(int argc, char *argv[]) {
     int iterations = 1000;
     int outer_its = 20;
 
-    // Sweep working set size (number of pages)
     for (size_t num_pages = 4; num_pages <= max_pages; num_pages += (num_pages < 128 ? 4 : (num_pages < 512 ? 16 : 64))) {
-        
         my_rand_shuffle(indices, num_pages);
 
-        // Set up pointer chain: buffer[indices[i]*4096] points to buffer[indices[i+1]*4096]
         for (size_t i = 0; i < num_pages; i++) {
             size_t next_i = (i + 1) % num_pages;
             char **current_ptr = (char **)(buffer + indices[i] * page_size);
@@ -63,15 +44,9 @@ int main(int argc, char *argv[]) {
         }
 
         char **current = (char **)buffer;
-
-        // Warmup cache / TLB
-        for (int k = 0; k < 200; k++) {
-            current = (char **)*current;
-        }
+        for (int k = 0; k < 200; k++) current = (char **)*current;
 
         unsigned long long min_total_cycles = -1;
-
-        // Measure traversal latency
         for (int o = 0; o < outer_its; o++) {
             unsigned long long start = rdtsc();
             for (int i = 0; i < iterations; i++) {
@@ -82,22 +57,12 @@ int main(int argc, char *argv[]) {
             }
             unsigned long long end = rdtsc();
             unsigned long long diff = end - start;
-            if (diff < min_total_cycles) {
-                min_total_cycles = diff;
-            }
+            if (diff < min_total_cycles) min_total_cycles = diff;
         }
 
         double cycles_per_access = (double)min_total_cycles / (iterations * 4);
         printf("%zu,%.4f\n", num_pages, cycles_per_access);
-        
-        // Prevent compiler optimization of pointer chain traversal
-        if (!current) {
-            volatile char sink = **current;
-            (void)sink;
-        }
     }
-
-    free(indices);
-    munmap(buffer, total_bytes);
+    free(indices); munmap(buffer, total_bytes);
     return 0;
 }

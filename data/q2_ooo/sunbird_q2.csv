@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+sunbird.ece.ncsu.edu,Method1_ALU,Dependent,16,58.17,44.02,0.50
+sunbird.ece.ncsu.edu,Method1_ALU,Independent,16,23.81,18.03,1.16
+sunbird.ece.ncsu.edu,Method2_DRAM,Independent,0,297.80,0.0,0.0
+sunbird.ece.ncsu.edu,Method2_DRAM,Independent,8,301.32,0.0,0.0
+sunbird.ece.ncsu.edu,Method2_DRAM,Independent,16,311.45,0.0,0.0
+sunbird.ece.ncsu.edu,Method2_DRAM,Independent,32,302.25,0.0,0.0
+sunbird.ece.ncsu.edu,Method2_DRAM,Independent,64,314.62,0.0,0.0

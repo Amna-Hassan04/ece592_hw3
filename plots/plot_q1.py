@@ -1,36 +1,44 @@
+import os
+import glob
 import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
-import glob
-import os
 
-# Find CSV files across repository paths
-search_paths = [
-    "data/q1_pipelined/*_q1.csv",
-    "../data/q1_pipelined/*_q1.csv"
-]
+# Recursively find all Q1 CSV files across any folder structure inside data/
+csv_files = glob.glob("data/**/*q1*.csv", recursive=True) + glob.glob("data/*q1*.csv")
+# Deduplicate file list
+csv_files = sorted(list(set(csv_files)))
 
-csv_files = []
-for pattern in search_paths:
-    files = glob.glob(pattern)
-    if files:
-        csv_files.extend(files)
+print(f"Found Q1 CSV files: {csv_files}")
 
-csv_files = list(set(csv_files))
-print(f"Found CSV files: {csv_files}")
+all_dfs = []
+for file in csv_files:
+    try:
+        df = pd.read_csv(file)
+        df.columns = df.columns.str.strip()
+        
+        # Extract clean machine name from filename (e.g., "data/q1_pipelined/sunbird_q1.csv" -> "sunbird")
+        basename = os.path.basename(file)
+        inferred_machine = basename.split('_')[0].lower()
+        
+        # Assign or standardize machine column
+        if "Machine" in df.columns:
+            df["Machine_Clean"] = df["Machine"].astype(str).str.split(".").str[0].str.lower()
+            df["Machine_Clean"] = df["Machine_Clean"].mask(df["Machine_Clean"] == "", inferred_machine)
+        else:
+            df["Machine_Clean"] = inferred_machine
+            
+        all_dfs.append(df)
+        print(f"Successfully loaded {file} for machine: {inferred_machine}")
+    except Exception as e:
+        print(f"Error reading {file}: {e}")
 
-dfs = [pd.read_csv(f) for f in csv_files]
+if all_dfs:
+    df = pd.concat(all_dfs, ignore_index=True)
 
-if dfs:
-    df = pd.concat(dfs, ignore_index=True)
-    df.columns = df.columns.str.strip()
-    
-    # Clean up machine names (e.g., skylark.ece.ncsu.edu -> skylark)
-    df["Machine"] = df["Machine"].str.split(".").str[0]
+    avg_df = df.groupby("Machine_Clean")[["Dependent_Cycles", "Independent_Cycles"]].mean().reset_index()
 
-    avg_df = df.groupby("Machine")[["Dependent_Cycles", "Independent_Cycles"]].mean().reset_index()
-
-    plot_df = avg_df.melt(id_vars="Machine", value_vars=["Dependent_Cycles", "Independent_Cycles"],
+    plot_df = avg_df.melt(id_vars="Machine_Clean", value_vars=["Dependent_Cycles", "Independent_Cycles"],
                           var_name="Instruction Type", value_name="Average Cycles")
 
     plot_df["Instruction Type"] = plot_df["Instruction Type"].replace({
@@ -38,14 +46,14 @@ if dfs:
         "Independent_Cycles": "Independent Stream (Overlapped)"
     })
 
-    # Set up a 1-row, 2-column figure layout (or single clean panel styled like your reference)
+    # Set up figure styling
     sns.set_theme(style="whitegrid")
-    fig, ax = plt.subplots(figsize=(8, 6))
+    fig, ax = plt.subplots(figsize=(9, 6))
 
     palette = {"Dependent Chain (Stalled)": "#d95f02", "Independent Stream (Overlapped)": "#1b9e77"}
-    bars = sns.barplot(x="Machine", y="Average Cycles", hue="Instruction Type", data=plot_df, palette=palette, ax=ax)
+    bars = sns.barplot(x="Machine_Clean", y="Average Cycles", hue="Instruction Type", data=plot_df, palette=palette, ax=ax)
 
-    # Add exact numerical labels on top of the bars (similar to your reference image)
+    # Add exact numerical labels on top of the bars
     for p in ax.patches:
         height = p.get_height()
         if height > 0:
@@ -63,11 +71,14 @@ if dfs:
 
     plt.tight_layout()
     
-    # Save to plots directory
-    plt.savefig("q1_pipeline_comparison.png", dpi=300)
-    if os.path.exists("../plots"):
-        plt.savefig("../plots/q1_pipeline_comparison.png", dpi=300)
-        
-    print("Graph successfully generated with data labels and reference styling!")
+    # Create target directory: plots/q1/
+    output_dir = "plots/q1"
+    os.makedirs(output_dir, exist_ok=True)
+    
+    output_path = os.path.join(output_dir, "q1_pipeline_comparison.png")
+    plt.savefig(output_path, dpi=300)
+    plt.close()
+    
+    print(f"Graph successfully generated and saved to {output_path}!")
 else:
-    print("Error: No CSV data files found.")
+    print("Error: No Q1 CSV data files found.")

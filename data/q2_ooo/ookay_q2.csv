@@ -1,0 +1,8 @@
+hostname,method,variant,num_independent_insts,rdtscp_cycles,pmu_cycles,ipc
+ookay.ece.ncsu.edu,Method1_ALU,Dependent,16,42.87,0.00,0.00
+ookay.ece.ncsu.edu,Method1_ALU,Independent,16,23.28,0.00,0.00
+ookay.ece.ncsu.edu,Method2_DRAM,Independent,0,287.87,0.0,0.0
+ookay.ece.ncsu.edu,Method2_DRAM,Independent,8,290.59,0.0,0.0
+ookay.ece.ncsu.edu,Method2_DRAM,Independent,16,297.28,0.0,0.0
+ookay.ece.ncsu.edu,Method2_DRAM,Independent,32,297.97,0.0,0.0
+ookay.ece.ncsu.edu,Method2_DRAM,Independent,64,306.77,0.0,0.0
